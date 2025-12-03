@@ -1,3 +1,5 @@
+import { getAuthState } from '../utils/auth.ts';
+
 export class ProfilePage {
     render(): string {
         const userJson = localStorage.getItem('user');
@@ -35,7 +37,7 @@ export class ProfilePage {
             deleteAccountBtn.addEventListener('click', async () => {
                 if (confirm('Är du säker på att du vill ta bort ditt konto? Detta går inte att ångra.')) {
                     try {
-                        const token = localStorage.getItem('token');
+                        const token = getAuthState().token || localStorage.getItem('token');
                         const response = await fetch('/api/auth/me', {
                             method: 'DELETE',
                             headers: {

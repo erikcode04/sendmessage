@@ -9,6 +9,11 @@ export interface User {
     createdAt: Date;
     updatedAt?: Date;
     lastLoginAt?: Date;
+    contacts: {
+        id: string;
+        name: string;
+        phoneNumber: string;
+    }[];
 }
 
 export interface CreateUserRequest {

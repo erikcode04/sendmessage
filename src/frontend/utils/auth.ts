@@ -122,10 +122,12 @@ export class AuthGuard {
   public login(token: string, userData?: any): void {
     this.setTokenCookie(token);
 
-
     try {
-      localStorage.setItem('auth_token_backup', token);
-      console.log('AuthGuard: Token also saved to localStorage as backup');
+      localStorage.setItem('token', token);
+      if (userData) {
+        localStorage.setItem('user', JSON.stringify(userData));
+      }
+      console.log('AuthGuard: Token and user saved to localStorage');
     } catch (error) {
       console.warn('AuthGuard: Could not save to localStorage:', error);
     }
@@ -140,10 +142,11 @@ export class AuthGuard {
   public logout(): void {
     this.removeTokenCookie();
 
-
     try {
-      localStorage.removeItem('auth_token_backup');
-      console.log('AuthGuard: Backup token removed from localStorage');
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      localStorage.removeItem('auth_token_backup'); // Cleanup old key
+      console.log('AuthGuard: Token and user removed from localStorage');
     } catch (error) {
       console.warn('AuthGuard: Could not remove from localStorage:', error);
     }
@@ -221,20 +224,7 @@ export class AuthGuard {
       }
     }
 
-    console.log('AuthGuard: No token in cookies, checking localStorage...');
-
-
-    try {
-      const backupToken = localStorage.getItem('auth_token_backup');
-      if (backupToken) {
-        console.log('AuthGuard: Found backup token in localStorage');
-        return backupToken;
-      }
-    } catch (error) {
-      console.warn('AuthGuard: Could not access localStorage:', error);
-    }
-
-    console.log('AuthGuard: No token found anywhere');
+    console.log('AuthGuard: No token found in cookies');
     return null;
   }
 

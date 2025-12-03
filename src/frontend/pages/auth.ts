@@ -60,7 +60,7 @@ export class AuthPage {
   }
 
   addEventListeners(router: any) {
-    
+
     (window as any).currentRouter = router;
 
     this.setupTabSwitching();
@@ -101,15 +101,15 @@ export class AuthPage {
     const demoButton = document.getElementById('demo-login');
     if (demoButton) {
       demoButton.addEventListener('click', () => {
-        
+
         const demoToken = this.createDemoToken();
 
-        
+
         login(demoToken, { name: 'Demo User', email: 'demo@example.com' });
 
         this.showMessage('Demo-inloggning lyckades!', 'success');
         setTimeout(async () => {
-          await router.navigate('/items');
+          await router.navigate('/home');
         }, 1000);
       });
     }
@@ -161,7 +161,7 @@ export class AuthPage {
       const result = await response.json();
 
       if (result.success && result.token) {
-        
+
         login(result.token, result.user);
 
         this.showMessage(
@@ -169,9 +169,9 @@ export class AuthPage {
           'success'
         );
 
-        
+
         setTimeout(async () => {
-          await router.navigate('/items');
+          await router.navigate('/home');
         }, 1500);
 
       } else {
@@ -188,8 +188,8 @@ export class AuthPage {
     const page = document.querySelector('.page');
     if (page) {
       page.innerHTML = this.render().match(/<div class="page">([\s\S]*)<\/div>/)?.[1] || '';
-      
-      const router = (window as any).currentRouter; 
+
+      const router = (window as any).currentRouter;
       if (router) {
         this.addEventListeners(router);
       }
@@ -202,7 +202,7 @@ export class AuthPage {
       messageEl.textContent = message;
       messageEl.className = `auth-message ${type}`;
 
-      
+
       setTimeout(() => {
         messageEl.textContent = '';
         messageEl.className = 'auth-message';
@@ -217,7 +217,7 @@ export class AuthPage {
       name: 'Demo User',
       email: 'demo@example.com',
       iat: Math.floor(Date.now() / 1000),
-      exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60) 
+      exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60)
     }));
     const signature = btoa('demo-signature');
 

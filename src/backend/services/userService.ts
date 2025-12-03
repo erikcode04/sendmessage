@@ -45,7 +45,8 @@ export class UserService {
                 fullname: userData.fullname.trim(),
                 email: userData.email.toLowerCase().trim(),
                 passwordHash,
-                createdAt: new Date()
+                createdAt: new Date(),
+                contacts: []
             };
 
             const result = await collection.insertOne(newUser as User);
