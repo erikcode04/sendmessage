@@ -100,13 +100,25 @@ export class HomePage {
         } else {
           container.innerHTML = contacts.map((contact: any) => `
                         <div class="contact-item" style="padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
-                            <div>
+                            <div style="flex: 1;">
                                 <strong>${contact.name}</strong><br>
                                 <span>${contact.phoneNumber}</span>
                             </div>
-                            <button class="btn btn-danger btn-sm delete-contact-btn" data-id="${contact.id}">Ta bort</button>
+                            <div style="display: flex; gap: 10px;">
+                                <button class="btn btn-primary btn-sm message-contact-btn" data-id="${contact.id}" data-name="${contact.name}">Skicka meddelande</button>
+                                <button class="btn btn-danger btn-sm delete-contact-btn" data-id="${contact.id}">Ta bort</button>
+                            </div>
                         </div>
                     `).join('');
+
+          // Add message listeners
+          document.querySelectorAll('.message-contact-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              const id = (e.target as HTMLElement).dataset.id;
+              const name = (e.target as HTMLElement).dataset.name;
+              (window as any).currentRouter.navigate(`/messages/${id}/${name}`);
+            });
+          });
 
           // Add delete listeners
           document.querySelectorAll('.delete-contact-btn').forEach(btn => {

@@ -67,4 +67,36 @@ router.delete('/contacts/:id', requireAuth, async (req: AuthRequest, res: Respon
     }
 });
 
+// Message routes
+router.get('/contacts/:contactId/messages', requireAuth, async (req: AuthRequest, res: Response) => {
+    try {
+        const userId = req.user!.id;
+        const contactId = req.params.contactId;
+
+        const messages = await contactService.getMessages(userId, contactId);
+        res.json(messages);
+    } catch (error) {
+        console.error('Error fetching messages:', error);
+        res.status(500).json({ error: 'Failed to fetch messages' });
+    }
+});
+
+router.post('/contacts/:contactId/messages', requireAuth, async (req: AuthRequest, res: Response) => {
+    try {
+        const userId = req.user!.id;
+        const contactId = req.params.contactId;
+        const { text } = req.body;
+
+        if (!text) {
+            return res.status(400).json({ error: 'Message text is required' });
+        }
+
+        const newMessage = await contactService.sendMessage(userId, contactId, { text });
+        res.status(201).json(newMessage);
+    } catch (error) {
+        console.error('Error sending message:', error);
+        res.status(500).json({ error: 'Failed to send message' });
+    }
+});
+
 export default router;

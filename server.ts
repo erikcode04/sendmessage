@@ -31,11 +31,19 @@ async function createServer() {
     } else {
         app.use(express.static(path.join(__dirname, 'dist')));
 
-        app.get('/', (req, res) => {
+        app.get('/', (_req, res) => {
             res.sendFile(path.join(__dirname, 'dist', 'index.html'));
         });
 
-        app.get('/profile', (req, res) => {
+        app.get('/home', (_req, res) => {
+            res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+        });
+
+        app.get('/profile', (_req, res) => {
+            res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+        });
+
+        app.get('/messages/*', (_req, res) => {
             res.sendFile(path.join(__dirname, 'dist', 'index.html'));
         });
 

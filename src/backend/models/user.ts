@@ -13,6 +13,12 @@ export interface User {
         id: string;
         name: string;
         phoneNumber: string;
+        messages: {
+            id: string;
+            text: string;
+            sentAt: Date;
+            sentBy: 'user' | 'contact';
+        }[];
     }[];
 }
 

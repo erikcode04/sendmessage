@@ -41,7 +41,31 @@ export class Router {
 
     private async handleRoute(path: string) {
         console.log('Handling route:', path, 'Available routes:', Array.from(this.routes.keys()));
-        const handler = this.routes.get(path);
+
+        // Check for exact match first
+        let handler = this.routes.get(path);
+
+        // If no exact match, check for dynamic routes
+        if (!handler) {
+            for (const [route, routeHandler] of this.routes.entries()) {
+                if (route.includes(':')) {
+                    const routeParts = route.split('/');
+                    const pathParts = path.split('/');
+
+                    if (routeParts.length === pathParts.length) {
+                        const matches = routeParts.every((part, i) => {
+                            return part.startsWith(':') || part === pathParts[i];
+                        });
+
+                        if (matches) {
+                            handler = routeHandler;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
         if (handler) {
             console.log('Found handler for:', path);
             await handler();
